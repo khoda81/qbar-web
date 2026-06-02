@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Tick Opacity Demo</title>
+        <style>
+            body {
+                font-family: sans-serif;
+                margin: 0;
+                padding: 20px;
+                display: flex;
+                flex-direction: column;
+                height: 100vh;
+                box-sizing: border-box;
+                background: #121212;
+                color: #eee;
+            }
+
+            #controls {
+                margin-bottom: 20px;
+                display: flex;
+                gap: 20px;
+                flex-wrap: wrap;
+            }
+
+            .control-group {
+                display: flex;
+                flex-direction: column;
+            }
+
+            canvas {
+                flex-grow: 1;
+                width: 100%;
+                min-height: 0;
+                display: block;
+                background: #1e1e1e;
+                border: 1px solid #333;
+                border-radius: 4px;
+            }
+
+            input[type="range"] {
+                width: 100%;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="controls">
+            <div class="control-group" style="flex-grow: 1">
+                <label>lambda: <span id="val_lambda"></span></label>
+                <label>median: <span id="median"></span></label>
+            </div>
+            <div class="control-group">
+                <label>min_dist (px): <span id="val_min_dist">30</span></label>
+                <input
+                    type="range"
+                    id="min_dist"
+                    min="1"
+                    max="500"
+                    step="1"
+                    value="128"
+                />
+            </div>
+            <div class="control-group">
+                <label
+                    >drop_off (multiplier):
+                    <span id="val_drop_off">2.0</span></label
+                >
+                <input
+                    type="range"
+                    id="drop_off"
+                    min="1.0"
+                    max="5.0"
+                    step="0.1"
+                    value="2.0"
+                />
+            </div>
+        </div>
+
+        <canvas id="canvas"></canvas>
+        <script src="index.js"></script>
+    </body>
+</html>
