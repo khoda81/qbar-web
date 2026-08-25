@@ -20,11 +20,18 @@
                 display: flex;
                 gap: 20px;
                 flex-wrap: wrap;
+                align-items: flex-end;
             }
 
             .control-group {
                 display: flex;
                 flex-direction: column;
+            }
+
+            .lab-link {
+                color: #9fc0ff;
+                margin-left: auto;
+                padding-bottom: 2px;
             }
 
             canvas {
@@ -74,6 +81,7 @@
                     value="2.0"
                 />
             </div>
+            <a class="lab-link" href="bayes.html">Bayesian inference lab →</a>
         </div>
 
         <canvas id="canvas"></canvas>
