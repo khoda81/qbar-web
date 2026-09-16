@@ -1,0 +1,132 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>QBar · X × ReLU(Y)</title>
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        font-family: sans-serif;
+        margin: 0;
+        padding: 20px;
+        min-height: 100vh;
+        background: #121212;
+        color: #eee;
+      }
+      .topline {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-bottom: 18px;
+      }
+      h1 { margin: 0; font-size: 24px; }
+      a { color: #9fc0ff; }
+      #controls {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        gap: 14px;
+        margin-bottom: 16px;
+      }
+      .panel {
+        background: #1e1e1e;
+        border: 1px solid #333;
+        border-radius: 8px;
+        padding: 14px;
+      }
+      .panel h2 { margin: 0 0 10px; font-size: 16px; }
+      .control-group { margin: 10px 0; }
+      .control-group label { display: block; margin-bottom: 4px; color: #bbb; }
+      input[type="range"] { width: 100%; }
+      .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: #eee; }
+      #stats {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 18px;
+        margin: 0 0 12px;
+        color: #bbb;
+        font-size: 14px;
+      }
+      #canvas {
+        display: block;
+        width: 100%;
+        height: 360px;
+        background: #1e1e1e;
+        border: 1px solid #333;
+        border-radius: 4px;
+      }
+      button {
+        border: 1px solid #444;
+        border-radius: 6px;
+        padding: 8px 12px;
+        background: #181818;
+        color: #eee;
+        cursor: pointer;
+      }
+      button:hover { border-color: #777; }
+      .note { margin-top: 10px; color: #999; font-size: 13px; }
+    </style>
+  </head>
+  <body>
+    <div class="topline">
+      <h1>QBar · <span class="mono">Z = X × ReLU(Y)</span></h1>
+      <a href="index.html">← distribution demo</a>
+    </div>
+
+    <div id="controls">
+      <section class="panel">
+        <h2>X ~ Normal(μₓ, exp(log varₓ))</h2>
+        <div class="control-group">
+          <label>μₓ: <span class="mono" id="val_mu_x">0.00</span></label>
+          <input id="mu_x" type="range" min="-3" max="3" step="0.05" value="0" />
+        </div>
+        <div class="control-group">
+          <label>log varₓ: <span class="mono" id="val_logvar_x">0.00</span></label>
+          <input id="logvar_x" type="range" min="-4" max="3" step="0.05" value="0" />
+        </div>
+        <div>σₓ = <span class="mono" id="val_sigma_x">1.000</span></div>
+      </section>
+
+      <section class="panel">
+        <h2>Y ~ Normal(μᵧ, exp(log varᵧ))</h2>
+        <div class="control-group">
+          <label>μᵧ: <span class="mono" id="val_mu_y">0.00</span></label>
+          <input id="mu_y" type="range" min="-3" max="3" step="0.05" value="0" />
+        </div>
+        <div class="control-group">
+          <label>log varᵧ: <span class="mono" id="val_logvar_y">0.00</span></label>
+          <input id="logvar_y" type="range" min="-4" max="3" step="0.05" value="0" />
+        </div>
+        <div>σᵧ = <span class="mono" id="val_sigma_y">1.000</span></div>
+      </section>
+
+      <section class="panel">
+        <h2>QBar</h2>
+        <div class="control-group">
+          <label>min_dist (px): <span class="mono" id="val_min_dist">128</span></label>
+          <input id="min_dist" type="range" min="1" max="500" step="1" value="128" />
+        </div>
+        <div class="control-group">
+          <label>drop_off: <span class="mono" id="val_drop_off">2.0</span></label>
+          <input id="drop_off" type="range" min="1.0" max="5.0" step="0.1" value="2.0" />
+        </div>
+        <button id="reset" type="button">Reset</button>
+      </section>
+    </div>
+
+    <div id="stats">
+      <span>P(Z=0): <span class="mono" id="stat_atom">0.5000</span></span>
+      <span>q05: <span class="mono" id="stat_q05">—</span></span>
+      <span>q50: <span class="mono" id="stat_q50">—</span></span>
+      <span>q95: <span class="mono" id="stat_q95">—</span></span>
+    </div>
+
+    <canvas id="canvas"></canvas>
+    <div class="note">The shaded interval is the quantile plateau created by the point mass at Z = 0. Samples use fixed base Gaussian draws so slider motion is stable.</div>
+
+    <script src="qbar-core.js"></script>
+    <script src="relu_product.js"></script>
+  </body>
+</html>
