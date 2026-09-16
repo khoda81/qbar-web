@@ -9,7 +9,7 @@
       body {
         font-family: sans-serif;
         margin: 0;
-        padding: 20px;
+        padding: 14px;
         min-height: 100vh;
         background: #121212;
         color: #eee;
@@ -18,102 +18,120 @@
         display: flex;
         align-items: baseline;
         justify-content: space-between;
-        gap: 16px;
+        gap: 10px;
         flex-wrap: wrap;
-        margin-bottom: 18px;
+        margin-bottom: 8px;
       }
-      h1 { margin: 0; font-size: 24px; }
-      a { color: #9fc0ff; }
-      #controls {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-        gap: 14px;
-        margin-bottom: 16px;
-      }
-      .panel {
-        background: #1e1e1e;
-        border: 1px solid #333;
-        border-radius: 8px;
-        padding: 14px;
-      }
-      .panel h2 { margin: 0 0 10px; font-size: 16px; }
-      .control-group { margin: 10px 0; }
-      .control-group label { display: block; margin-bottom: 4px; color: #bbb; }
-      input[type="range"] { width: 100%; }
+      h1 { margin: 0; font-size: 21px; }
+      a { color: #9fc0ff; font-size: 13px; }
       .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: #eee; }
+
       #stats {
         display: flex;
         flex-wrap: wrap;
-        gap: 18px;
-        margin: 0 0 12px;
+        gap: 6px 14px;
+        margin: 0 0 8px;
         color: #bbb;
-        font-size: 14px;
+        font-size: 12px;
       }
       #canvas {
         display: block;
         width: 100%;
-        height: 360px;
+        height: 260px;
         background: #1e1e1e;
         border: 1px solid #333;
         border-radius: 4px;
       }
+      .note { margin: 6px 0 10px; color: #888; font-size: 11px; }
+
+      #controls {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      .panel {
+        min-width: 0;
+        background: #1e1e1e;
+        border: 1px solid #333;
+        border-radius: 7px;
+        padding: 8px;
+      }
+      .panel h2 {
+        margin: 0 0 5px;
+        font-size: 13px;
+        line-height: 1.2;
+      }
+      .control-group { margin: 4px 0; }
+      .control-group label {
+        display: flex;
+        justify-content: space-between;
+        gap: 6px;
+        margin-bottom: 0;
+        color: #bbb;
+        font-size: 11px;
+        line-height: 1.15;
+      }
+      input[type="range"] {
+        display: block;
+        width: 100%;
+        height: 22px;
+        margin: 0;
+      }
+      .sigma {
+        color: #aaa;
+        font-size: 11px;
+        margin-top: 1px;
+      }
+      .qbar-panel {
+        grid-column: 1 / -1;
+        display: grid;
+        grid-template-columns: 1fr 1fr auto;
+        align-items: end;
+        gap: 8px;
+      }
+      .qbar-panel h2 { display: none; }
+      .qbar-panel .control-group { margin: 0; }
       button {
+        min-height: 34px;
         border: 1px solid #444;
         border-radius: 6px;
-        padding: 8px 12px;
+        padding: 5px 10px;
         background: #181818;
         color: #eee;
         cursor: pointer;
       }
       button:hover { border-color: #777; }
-      .note { margin-top: 10px; color: #999; font-size: 13px; }
+
+      @media (min-width: 700px) {
+        body { padding: 20px; }
+        .topline { margin-bottom: 12px; }
+        h1 { font-size: 24px; }
+        #stats { font-size: 14px; gap: 18px; margin-bottom: 10px; }
+        #canvas { height: 360px; }
+        .note { font-size: 13px; margin: 8px 0 14px; }
+        #controls {
+          grid-template-columns: 1fr 1fr 0.9fr;
+          gap: 12px;
+        }
+        .panel { padding: 12px; }
+        .panel h2 { font-size: 16px; margin-bottom: 8px; }
+        .control-group { margin: 8px 0; }
+        .control-group label { font-size: 13px; margin-bottom: 2px; }
+        input[type="range"] { height: 28px; }
+        .sigma { font-size: 13px; }
+        .qbar-panel {
+          grid-column: auto;
+          display: block;
+        }
+        .qbar-panel h2 { display: block; }
+        .qbar-panel .control-group { margin: 8px 0; }
+      }
     </style>
   </head>
   <body>
     <div class="topline">
       <h1>QBar · <span class="mono">Z = X × ReLU(Y)</span></h1>
       <a href="index.html">← distribution demo</a>
-    </div>
-
-    <div id="controls">
-      <section class="panel">
-        <h2>X ~ Normal(μₓ, exp(log varₓ))</h2>
-        <div class="control-group">
-          <label>μₓ: <span class="mono" id="val_mu_x">0.00</span></label>
-          <input id="mu_x" type="range" min="-3" max="3" step="0.05" value="0" />
-        </div>
-        <div class="control-group">
-          <label>log varₓ: <span class="mono" id="val_logvar_x">0.00</span></label>
-          <input id="logvar_x" type="range" min="-4" max="3" step="0.05" value="0" />
-        </div>
-        <div>σₓ = <span class="mono" id="val_sigma_x">1.000</span></div>
-      </section>
-
-      <section class="panel">
-        <h2>Y ~ Normal(μᵧ, exp(log varᵧ))</h2>
-        <div class="control-group">
-          <label>μᵧ: <span class="mono" id="val_mu_y">0.00</span></label>
-          <input id="mu_y" type="range" min="-3" max="3" step="0.05" value="0" />
-        </div>
-        <div class="control-group">
-          <label>log varᵧ: <span class="mono" id="val_logvar_y">0.00</span></label>
-          <input id="logvar_y" type="range" min="-4" max="3" step="0.05" value="0" />
-        </div>
-        <div>σᵧ = <span class="mono" id="val_sigma_y">1.000</span></div>
-      </section>
-
-      <section class="panel">
-        <h2>QBar</h2>
-        <div class="control-group">
-          <label>min_dist (px): <span class="mono" id="val_min_dist">128</span></label>
-          <input id="min_dist" type="range" min="1" max="500" step="1" value="128" />
-        </div>
-        <div class="control-group">
-          <label>drop_off: <span class="mono" id="val_drop_off">2.0</span></label>
-          <input id="drop_off" type="range" min="1.0" max="5.0" step="0.1" value="2.0" />
-        </div>
-        <button id="reset" type="button">Reset</button>
-      </section>
     </div>
 
     <div id="stats">
@@ -124,7 +142,48 @@
     </div>
 
     <canvas id="canvas"></canvas>
-    <div class="note">The shaded interval is the quantile plateau created by the point mass at Z = 0. Samples use fixed base Gaussian draws so slider motion is stable.</div>
+    <div class="note">Shaded interval = quantile plateau from the point mass at Z = 0.</div>
+
+    <div id="controls">
+      <section class="panel">
+        <h2>X ~ Normal(μₓ, exp(log varₓ))</h2>
+        <div class="control-group">
+          <label><span>μₓ</span><span class="mono" id="val_mu_x">0.00</span></label>
+          <input id="mu_x" type="range" min="-3" max="3" step="0.05" value="0" />
+        </div>
+        <div class="control-group">
+          <label><span>log varₓ</span><span class="mono" id="val_logvar_x">0.00</span></label>
+          <input id="logvar_x" type="range" min="-4" max="3" step="0.05" value="0" />
+        </div>
+        <div class="sigma">σₓ = <span class="mono" id="val_sigma_x">1.000</span></div>
+      </section>
+
+      <section class="panel">
+        <h2>Y ~ Normal(μᵧ, exp(log varᵧ))</h2>
+        <div class="control-group">
+          <label><span>μᵧ</span><span class="mono" id="val_mu_y">0.00</span></label>
+          <input id="mu_y" type="range" min="-3" max="3" step="0.05" value="0" />
+        </div>
+        <div class="control-group">
+          <label><span>log varᵧ</span><span class="mono" id="val_logvar_y">0.00</span></label>
+          <input id="logvar_y" type="range" min="-4" max="3" step="0.05" value="0" />
+        </div>
+        <div class="sigma">σᵧ = <span class="mono" id="val_sigma_y">1.000</span></div>
+      </section>
+
+      <section class="panel qbar-panel">
+        <h2>QBar</h2>
+        <div class="control-group">
+          <label><span>min_dist</span><span class="mono" id="val_min_dist">128</span></label>
+          <input id="min_dist" type="range" min="1" max="500" step="1" value="128" />
+        </div>
+        <div class="control-group">
+          <label><span>drop_off</span><span class="mono" id="val_drop_off">2.0</span></label>
+          <input id="drop_off" type="range" min="1.0" max="5.0" step="0.1" value="2.0" />
+        </div>
+        <button id="reset" type="button">Reset</button>
+      </section>
+    </div>
 
     <script src="qbar-core.js"></script>
     <script src="relu_product.js"></script>
